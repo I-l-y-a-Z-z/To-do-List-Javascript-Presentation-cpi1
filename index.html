@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple To-Do List</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f5f8fa;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 32px;
+        }
+        
+        /* Input area styling */
+        .input-container {
+            display: flex;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        #taskInput {
+            flex-grow: 1;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            background-color: white;
+        }
+        
+        #addButton {
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        #addButton:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Task item styling */
+        #taskList {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .todo-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        .todo-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #3498db;
+        }
+        
+        .todo-text {
+            flex-grow: 1;
+            margin-left: 15px;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .completed {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+        
+        .todo-item {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <h1>My To-Do List</h1>
+    
+    <div class="input-container">
+        <input type="text" id="taskInput" placeholder="Enter a task...">
+        <button id="addButton">Add</button>
+    </div>
+    
+    <ul id="taskList">
+    </ul>
+    
+    <script>
+        // Get DOM elements
+        const taskInput = document.getElementById('taskInput');
+        const addButton = document.getElementById('addButton');
+        const taskList = document.getElementById('taskList');
+        
+        // Add event listeners
+        addButton.addEventListener('click', addTask);
+        taskInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        });
+        
+        // Function to add a new task
+        function addTask() {
+            // Get the task text
+            const taskText = taskInput.value.trim();
+            
+            // Check if the input is not empty
+            if (taskText !== '') {
+                // Create a new list item
+                const listItem = document.createElement('li');
+                listItem.className = 'todo-item';
+                
+                // Create checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.addEventListener('change', function() {
+                    taskSpan.classList.toggle('completed');
+                });
+                
+                // Create task text span
+                const taskSpan = document.createElement('span');
+                taskSpan.className = 'todo-text';
+                taskSpan.textContent = taskText;
+                
+                // Create delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-btn';
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function() {
+                    taskList.removeChild(listItem);
+                });
+                
+                // Add elements to the list item
+                listItem.appendChild(checkbox);
+                listItem.appendChild(taskSpan);
+                listItem.appendChild(deleteButton);
+                
+                // Add the list item to the task list
+                taskList.appendChild(listItem);
+                
+                // Clear the input field
+                taskInput.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
